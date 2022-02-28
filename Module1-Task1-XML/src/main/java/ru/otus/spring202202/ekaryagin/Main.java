@@ -11,8 +11,6 @@ public class Main {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
         QuestionServiceImpl questionService = context.getBean(QuestionServiceImpl.class);
         List<Question> questions = questionService.getQuestions();
-        questions.forEach(question -> {
-            System.out.println(question.toString());
-        });
+        questions.forEach(question -> System.out.println(question.toString()));
     }
 }
