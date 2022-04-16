@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="questionDaoSVC" class="ru.otus.spring.ekaryagin.dao.QuestionDaoCSV">
+        <constructor-arg name="questionsFileSource" value="questions.csv"/>
+    </bean>
+
+    <bean id="questionServiceImpl" class="ru.otus.spring.ekaryagin.service.QuestionServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDaoSVC"/>
+    </bean>
+
+    <bean id="quizService" class="ru.otus.spring.ekaryagin.service.QuizService">
+        <constructor-arg name="questionService" ref="questionServiceImpl"/>
+        <constructor-arg name="ioService" ref="ioServiceImpl"/>
+    </bean>
+
+    <bean id="ioServiceImpl" class="ru.otus.spring.ekaryagin.service.IOServiceImpl">
+        <constructor-arg name="ioProvider" ref="ioProviderConsole"/>
+    </bean>
+
+    <bean id="ioProviderConsole" class="ru.otus.spring.ekaryagin.service.IOProviderConsole"/>
+
+</beans>
