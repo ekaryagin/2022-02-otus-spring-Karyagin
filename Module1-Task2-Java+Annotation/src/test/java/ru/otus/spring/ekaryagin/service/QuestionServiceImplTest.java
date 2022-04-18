@@ -3,6 +3,7 @@ package ru.otus.spring.ekaryagin.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import ru.otus.spring.ekaryagin.dao.QuestionDao;
 import ru.otus.spring.ekaryagin.domain.Answer;
 import ru.otus.spring.ekaryagin.domain.Question;
+import ru.otus.spring.ekaryagin.exception.QuestionsLoadingException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -26,7 +28,7 @@ class QuestionServiceImplTest {
         questionService = new QuestionServiceImpl(questionDao);
     }
 
-    @DisplayName("correctly works with dao")
+    @DisplayName("Correctly works with dao")
     @Test
     void getQuestions() {
         ArrayList<Question> questions = new ArrayList<>(Arrays.asList(
@@ -41,5 +43,16 @@ class QuestionServiceImplTest {
         given(questionDao.getQuestions()).willReturn(questions);
 
         assertEquals(questions, questionService.getQuestions());
+    }
+
+    @DisplayName("Throw a valid exception if there are no questions in the source")
+    @Test
+    void getException() {
+        ArrayList<Question> questions = new ArrayList<>();
+        given(questionDao.getQuestions()).willReturn(questions);
+        QuestionsLoadingException thrown =  Assertions.assertThrows(QuestionsLoadingException.class, () -> {
+            questionService.getQuestions();
+        });
+        assertEquals("There are no quiz questions in the source.", thrown.getMessage());
     }
 }

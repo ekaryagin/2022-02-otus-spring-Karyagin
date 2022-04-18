@@ -33,7 +33,7 @@ public class QuestionDaoCSV implements QuestionDao {
                 questions.add(ConverterForQuiz.getQuestionFromCSVString(buffer));
             }
         } catch (IOException e) {
-            throw new QuestionsLoadingException("The quiz file was not found or damaged");
+            throw new QuestionsLoadingException("The quiz file was not found or damaged.");
         }
         return questions;
     }

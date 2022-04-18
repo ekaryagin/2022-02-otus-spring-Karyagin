@@ -14,8 +14,13 @@ public class IOServiceImpl implements IOService{
     }
 
     @Override
-    public void outputText(String text) {
+    public void outputTextLn(String text) {
         printStream.println(text);
+    }
+
+    @Override
+    public void outputText(String text) {
+        printStream.print(text);
     }
 
     @Override
