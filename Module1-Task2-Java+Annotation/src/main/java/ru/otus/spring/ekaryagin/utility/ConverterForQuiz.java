@@ -8,6 +8,9 @@ import java.util.List;
 
 public class ConverterForQuiz {
 
+    private ConverterForQuiz() {
+    }
+
     public static Question getQuestionFromCSVString(String str) {
         String[] questionPlusAnswers = str.split(";");
         String question = questionPlusAnswers[0];

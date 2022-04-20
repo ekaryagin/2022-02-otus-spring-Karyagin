@@ -1,95 +1,61 @@
 package ru.otus.spring.ekaryagin.service;
 
-import ru.otus.spring.ekaryagin.domain.Answer;
-import ru.otus.spring.ekaryagin.domain.Question;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import ru.otus.spring.ekaryagin.domain.Student;
+import ru.otus.spring.ekaryagin.utility.Message;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+@Service
 public class QuizService {
 
-    private final QuestionService questionService;
     private final IOService ioService;
+    private final TestService testService;
+    private final int thresholdLevel;
 
-    public QuizService(QuestionService questionService, IOService ioService) {
-        this.questionService = questionService;
+    public QuizService( IOService ioService, TestService testService,
+                        @Value("${thresholdLevel}") int thresholdLevel) {
         this.ioService = ioService;
+        this.testService = testService;
+        this.thresholdLevel = thresholdLevel;
     }
 
     public void launchTheQuiz(){
-        ioService.outputTextLn("Welcome to the quiz!");
-
-        ioService.outputText("Input your last name: ");
+        ioService.outputTextLn(Message.WELCOME);
+        ioService.outputText(Message.INPUT_LAST_NAME);
         String lastName = ioService.inputText();
-        ioService.outputText("Input your first name: ");
+        ioService.outputText(Message.INPUT_FIRST_NAME);
         String firstName = ioService.inputText();
-
-        ioService.outputTextLn("Here is a list of questions:");
-        List<Question> questions = questionService.getQuestions();
-        int countQuestions = 0;
-        int countRightAnswers = 0;
-        for (Question question: questions) {
-            countQuestions++;
-            if (checkAnswer(askQuestion(question, countQuestions), askAnswer())){
-                countRightAnswers++;
-            }
+        Student student = new Student(firstName, lastName);
+        boolean beginTest = true;
+        int mark = 0;
+        while(beginTest){
+            mark = testService.startTesting();
+            ioService.outputTextLn(Message.REPEAT_TEST);
+            beginTest = userChoice();
         }
-        int mark = getResult(countQuestions, countRightAnswers);
-
-        ioService.outputText("\nYou have answered " + mark + "% of the questions correctly.\n");
+        debriefing(mark, student);
+        ioService.outputTextLn(Message.BAY);
     }
 
-    //Asks a question, and returns a list of correct answers
-    protected List<Integer> askQuestion(Question question, int number){
-        ioService.outputTextLn("\n" + number + " " + question.getTopic());
-        ioService.outputTextLn("\tAnswer options:");
-        return givePossibleAnswers(question);
-    }
-
-    //Suggests possible answers, and returns a list of correct answers
-    protected List<Integer> givePossibleAnswers(Question question){
-        Collections.shuffle(question.getAnswerOptions());
-        List<Integer> rightAnswers = new ArrayList<>();
-        int answerNumber = 1;
-        for (Answer answer: question.getAnswerOptions()) {
-            ioService.outputTextLn("\t\t" + answerNumber + " - " + answer.getSolution());
-            if (answer.isCorrect()){
-                rightAnswers.add(answerNumber);
-            }
-            answerNumber++;
-        }
-        return rightAnswers;
-    }
-
-    //Asks the user for his answer option, and returns a list of his answers
-    protected List<Integer> askAnswer() {
-        List<Integer> userAnswers = new ArrayList<>();
-        while (true) {
-            ioService.outputText("\t\tEnter the correct answer numbers separated by commas: ");
-            try {
-                String userResponse = ioService.inputText();
-                String[] strs = userResponse.split(",");
-                for (String str : strs) {
-                    userAnswers.add(Integer.parseInt(str));
-                }
-                return userAnswers;
-            } catch (NumberFormatException ex) {
-                ioService.outputTextLn("\t\tPlease enter numbers separated by commas, no other characters.");
-            }
+    protected void debriefing(int mark, Student student)
+    {
+        ioService.outputTextLn(Message.SUM_UP);
+        ioService.outputTextLn(Message.APPEAL + student.getFirstName() + " " + student.getLastName());
+        if (mark >= thresholdLevel){
+            ioService.outputTextLn(Message.PASSED_TEST);
+        } else {
+            ioService.outputTextLn(Message.FAILED_TEST);
         }
     }
 
-    //Checking the user's choice
-    protected boolean checkAnswer(List<Integer> rightAnswers,List<Integer> userAnswers){
-        Collections.sort(rightAnswers);
-        Collections.sort(userAnswers);
-        return rightAnswers.equals(userAnswers);
-    }
-
-    //Calculate the percentage of correct answers
-    protected int getResult(int countQuestions, int countRightAnswers){
-        return Math.round((float)countRightAnswers/(float)countQuestions*100);
+    protected boolean userChoice(){
+        boolean choice = false;
+        ioService.outputText(Message.YOUR_CHOICE);
+        String userInput = ioService.inputText();
+        if (userInput.equalsIgnoreCase("y") || userInput.equalsIgnoreCase("yes")){
+            choice = true;
+        }
+        return choice;
     }
 
 }

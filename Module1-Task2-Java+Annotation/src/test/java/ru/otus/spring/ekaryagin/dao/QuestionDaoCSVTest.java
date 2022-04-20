@@ -4,12 +4,12 @@ import org.junit.jupiter.api.*;
 import ru.otus.spring.ekaryagin.domain.Answer;
 import ru.otus.spring.ekaryagin.domain.Question;
 import ru.otus.spring.ekaryagin.exception.QuestionsLoadingException;
+import ru.otus.spring.ekaryagin.utility.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
 
 @DisplayName("Class QuestionDaoSVC")
 class QuestionDaoCSVTest {
@@ -47,6 +47,6 @@ class QuestionDaoCSVTest {
     void getException() {
         QuestionDaoCSV questionDaoEx = new QuestionDaoCSV("testEx.csv");
         QuestionsLoadingException thrown =  Assertions.assertThrows(QuestionsLoadingException.class, questionDaoEx::getQuestions);
-        assertEquals("The quiz file was not found or damaged.", thrown.getMessage());
+        assertEquals(Message.EXCEPT_FILE_NOT_FOUND, thrown.getMessage());
     }
 }

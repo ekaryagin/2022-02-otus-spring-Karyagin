@@ -12,6 +12,7 @@ import ru.otus.spring.ekaryagin.dao.QuestionDao;
 import ru.otus.spring.ekaryagin.domain.Answer;
 import ru.otus.spring.ekaryagin.domain.Question;
 import ru.otus.spring.ekaryagin.exception.QuestionsLoadingException;
+import ru.otus.spring.ekaryagin.utility.Message;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -50,9 +51,8 @@ class QuestionServiceImplTest {
     void getException() {
         ArrayList<Question> questions = new ArrayList<>();
         given(questionDao.getQuestions()).willReturn(questions);
-        QuestionsLoadingException thrown =  Assertions.assertThrows(QuestionsLoadingException.class, () -> {
-            questionService.getQuestions();
-        });
-        assertEquals("There are no quiz questions in the source.", thrown.getMessage());
+        QuestionsLoadingException thrown =  Assertions.assertThrows(QuestionsLoadingException.class, () ->
+            questionService.getQuestions());
+        assertEquals(Message.EXCEPT_NO_QUESTIONS, thrown.getMessage());
     }
 }

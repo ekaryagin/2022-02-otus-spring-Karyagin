@@ -1,11 +1,14 @@
 package ru.otus.spring.ekaryagin.service;
 
+import org.springframework.stereotype.Service;
 import ru.otus.spring.ekaryagin.dao.QuestionDao;
 import ru.otus.spring.ekaryagin.domain.Question;
 import ru.otus.spring.ekaryagin.exception.QuestionsLoadingException;
+import ru.otus.spring.ekaryagin.utility.Message;
 
 import java.util.List;
 
+@Service
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionDao questionDao;
@@ -19,7 +22,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<Question> questions = questionDao.getQuestions();
         if (questions.isEmpty())
         {
-            throw new QuestionsLoadingException("There are no quiz questions in the source.");
+            throw new QuestionsLoadingException(Message.EXCEPT_NO_QUESTIONS);
         }
         return questionDao.getQuestions();
     }
