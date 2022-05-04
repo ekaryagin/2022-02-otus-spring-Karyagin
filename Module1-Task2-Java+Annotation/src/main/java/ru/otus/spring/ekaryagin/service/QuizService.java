@@ -12,14 +12,14 @@ public class QuizService {
     private final TestService testService;
     private final int thresholdLevel;
 
-    public QuizService( IOService ioService, TestService testService,
-                        @Value("${thresholdLevel}") int thresholdLevel) {
+    public QuizService(IOService ioService, TestService testService,
+                       @Value("${thresholdLevel}") int thresholdLevel) {
         this.ioService = ioService;
         this.testService = testService;
         this.thresholdLevel = thresholdLevel;
     }
 
-    public void launchTheQuiz(){
+    public void launchTheQuiz() {
         ioService.outputTextLn(Message.WELCOME);
         ioService.outputText(Message.INPUT_LAST_NAME);
         String lastName = ioService.inputText();
@@ -28,7 +28,7 @@ public class QuizService {
         Student student = new Student(firstName, lastName);
         boolean beginTest = true;
         int mark = 0;
-        while(beginTest){
+        while (beginTest) {
             mark = testService.startTesting();
             ioService.outputTextLn(Message.REPEAT_TEST);
             beginTest = userChoice();
@@ -37,22 +37,21 @@ public class QuizService {
         ioService.outputTextLn(Message.BAY);
     }
 
-    protected void debriefing(int mark, Student student)
-    {
+    protected void debriefing(int mark, Student student) {
         ioService.outputTextLn(Message.SUM_UP);
         ioService.outputTextLn(Message.APPEAL + student.getFirstName() + " " + student.getLastName());
-        if (mark >= thresholdLevel){
+        if (mark >= thresholdLevel) {
             ioService.outputTextLn(Message.PASSED_TEST);
         } else {
             ioService.outputTextLn(Message.FAILED_TEST);
         }
     }
 
-    protected boolean userChoice(){
+    protected boolean userChoice() {
         boolean choice = false;
         ioService.outputText(Message.YOUR_CHOICE);
         String userInput = ioService.inputText();
-        if (userInput.equalsIgnoreCase("y") || userInput.equalsIgnoreCase("yes")){
+        if (userInput.equalsIgnoreCase("y") || userInput.equalsIgnoreCase("yes")) {
             choice = true;
         }
         return choice;

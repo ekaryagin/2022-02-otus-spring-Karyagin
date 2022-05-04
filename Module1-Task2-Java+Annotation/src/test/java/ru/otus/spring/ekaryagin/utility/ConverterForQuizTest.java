@@ -17,7 +17,7 @@ class ConverterForQuizTest {
     @Test
     void getQuestionFromCSVString() {
         String testStr = "Question1;!Answer1-1;Answer1-2;Answer1-3";
-        ArrayList<Answer> answers = new ArrayList<>( Arrays.asList(new Answer("Answer1-1", true),
+        ArrayList<Answer> answers = new ArrayList<>(Arrays.asList(new Answer("Answer1-1", true),
                 new Answer("Answer1-2", false),
                 new Answer("Answer1-3", false)));
         Question question = ConverterForQuiz.getQuestionFromCSVString(testStr);

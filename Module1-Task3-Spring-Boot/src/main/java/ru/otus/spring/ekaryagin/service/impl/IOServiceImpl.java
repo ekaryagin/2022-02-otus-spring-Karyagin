@@ -1,6 +1,8 @@
-package ru.otus.spring.ekaryagin.service;
+package ru.otus.spring.ekaryagin.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.otus.spring.ekaryagin.service.IOProvider;
+import ru.otus.spring.ekaryagin.service.IOService;
 
 import java.io.PrintStream;
 import java.util.Scanner;

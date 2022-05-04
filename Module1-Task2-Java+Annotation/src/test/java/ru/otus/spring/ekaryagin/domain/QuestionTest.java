@@ -15,7 +15,7 @@ class QuestionTest {
     @DisplayName("correctly created by the constructor")
     @Test
     void shouldHaveCorrectConstructor() {
-        ArrayList<Answer> answers = new ArrayList<>( Arrays.asList(new Answer("Answer1-1", true),
+        ArrayList<Answer> answers = new ArrayList<>(Arrays.asList(new Answer("Answer1-1", true),
                 new Answer("Answer1-2", false),
                 new Answer("Answer1-3", false)));
         Question question = new Question("Question", answers);

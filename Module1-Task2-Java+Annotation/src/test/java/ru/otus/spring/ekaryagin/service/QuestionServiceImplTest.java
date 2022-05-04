@@ -51,8 +51,8 @@ class QuestionServiceImplTest {
     void getException() {
         ArrayList<Question> questions = new ArrayList<>();
         given(questionDao.getQuestions()).willReturn(questions);
-        QuestionsLoadingException thrown =  Assertions.assertThrows(QuestionsLoadingException.class, () ->
-            questionService.getQuestions());
+        QuestionsLoadingException thrown = Assertions.assertThrows(QuestionsLoadingException.class, () ->
+                questionService.getQuestions());
         assertEquals(Message.EXCEPT_NO_QUESTIONS, thrown.getMessage());
     }
 }

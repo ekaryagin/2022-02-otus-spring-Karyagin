@@ -37,7 +37,7 @@ class QuestionDaoCSVTest {
                                 new Answer("Answer1-3", false))),
                 new Question("Question2",
                         Arrays.asList(new Answer("Answer2-1", false),
-                                 new Answer("Answer2-2", true))))
+                                new Answer("Answer2-2", true))))
         );
         assertEquals(questions, questionDao.getQuestions());
     }
@@ -46,7 +46,7 @@ class QuestionDaoCSVTest {
     @Test
     void getException() {
         QuestionDaoCSV questionDaoEx = new QuestionDaoCSV("testEx.csv");
-        QuestionsLoadingException thrown =  Assertions.assertThrows(QuestionsLoadingException.class, questionDaoEx::getQuestions);
+        QuestionsLoadingException thrown = Assertions.assertThrows(QuestionsLoadingException.class, questionDaoEx::getQuestions);
         assertEquals(Message.EXCEPT_FILE_NOT_FOUND, thrown.getMessage());
     }
 }

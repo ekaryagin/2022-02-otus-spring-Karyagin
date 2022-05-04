@@ -1,22 +1,24 @@
-package ru.otus.spring.ekaryagin.service;
+package ru.otus.spring.ekaryagin.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.otus.spring.ekaryagin.domain.Answer;
 import ru.otus.spring.ekaryagin.domain.Question;
-import ru.otus.spring.ekaryagin.utility.Message;
+import ru.otus.spring.ekaryagin.service.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Service
-public class TestService {
+public class TestServiceImpl implements TestService {
 
     private final QuestionService questionService;
+    private final MessageSender messageSender;
     private final IOService ioService;
 
-    public TestService(QuestionService questionService, IOService ioService) {
+    public TestServiceImpl(QuestionService questionService, MessageSender messageSender, IOService ioService) {
         this.questionService = questionService;
+        this.messageSender = messageSender;
         this.ioService = ioService;
     }
 
@@ -24,7 +26,7 @@ public class TestService {
         List<Question> questions = questionService.getQuestions();
         int countQuestions = 0;
         int countRightAnswers = 0;
-        ioService.outputTextLn(Message.START_TESTING);
+        messageSender.sendMessageLn("START_TESTING");
         for (Question question : questions) {
             countQuestions++;
             List<Integer> rightAnswers = askQuestion(question, countQuestions);
@@ -40,8 +42,8 @@ public class TestService {
 
     //Asks a question, and returns a list of correct answers
     protected List<Integer> askQuestion(Question question, int number) {
-        ioService.outputTextLn("\n" + number + ") " + question.getTopic());
-        ioService.outputTextLn(Message.ANSWER_OPTIONS);
+        messageSender.sendMessageFormatted("QUESTION_NUMBER", number, question.getTopic());
+        messageSender.sendMessageLn("ANSWER_OPTIONS");
         return givePossibleAnswers(question);
     }
 
@@ -51,7 +53,7 @@ public class TestService {
         List<Integer> rightAnswers = new ArrayList<>();
         int answerNumber = 1;
         for (Answer answer : question.getAnswerOptions()) {
-            ioService.outputTextLn("\t\t" + answerNumber + " - " + answer.getSolution());
+            messageSender.sendMessageFormatted("ANSWER_NUMBER", answerNumber, answer.getSolution());
             if (answer.isCorrect()) {
                 rightAnswers.add(answerNumber);
             }
@@ -64,7 +66,7 @@ public class TestService {
     protected List<Integer> askAnswer() {
         List<Integer> userAnswers = new ArrayList<>();
         while (true) {
-            ioService.outputText(Message.ENTER_ANSWER);
+            messageSender.sendMessage("ENTER_ANSWER");
             try {
                 String userResponse = ioService.inputText();
                 String[] strs = userResponse.split(",");
@@ -73,7 +75,7 @@ public class TestService {
                 }
                 return userAnswers;
             } catch (NumberFormatException ex) {
-                ioService.outputTextLn(Message.ONLY_NUM_AND_COMMAS);
+                messageSender.sendMessageLn("ONLY_NUM_AND_COMMAS");
             }
         }
     }
@@ -91,8 +93,7 @@ public class TestService {
     }
 
     protected void summingUp(int mark) {
-        ioService.outputTextLn(Message.TEST_OVER);
-        ioService.outputText("\n# - " + mark + "%");
-        ioService.outputTextLn(Message.YOUR_MARK);
+        messageSender.sendMessageLn("TEST_OVER");
+        messageSender.sendMessageFormatted("YOUR_MARK", mark);
     }
 }

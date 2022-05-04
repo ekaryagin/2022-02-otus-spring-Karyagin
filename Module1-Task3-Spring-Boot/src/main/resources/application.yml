@@ -1,0 +1,9 @@
+spring:
+  messages:
+    basename: i18n/messages
+    fallback-to-system-locale: false
+
+app-settings:
+  questions-base-name: i18n/questions/questions
+  threshold-level: 50
+  locale: ru-RU
