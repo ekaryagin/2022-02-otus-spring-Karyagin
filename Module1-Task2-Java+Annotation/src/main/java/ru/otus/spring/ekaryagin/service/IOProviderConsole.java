@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 @Service
-public class IOProviderConsole implements IOProvider{
+public class IOProviderConsole implements IOProvider {
 
     private final InputStream in;
     private final PrintStream out;

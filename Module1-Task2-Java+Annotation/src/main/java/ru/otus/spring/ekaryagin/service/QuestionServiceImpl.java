@@ -20,8 +20,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> getQuestions() {
         List<Question> questions = questionDao.getQuestions();
-        if (questions.isEmpty())
-        {
+        if (questions.isEmpty()) {
             throw new QuestionsLoadingException(Message.EXCEPT_NO_QUESTIONS);
         }
         return questionDao.getQuestions();

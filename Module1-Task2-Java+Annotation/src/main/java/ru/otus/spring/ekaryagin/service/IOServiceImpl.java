@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 @Service
-public class IOServiceImpl implements IOService{
+public class IOServiceImpl implements IOService {
 
     private final PrintStream printStream;
     private final Scanner inputScanner;

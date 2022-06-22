@@ -20,16 +20,16 @@ public class TestService {
         this.ioService = ioService;
     }
 
-    public int startTesting(){
+    public int startTesting() {
         List<Question> questions = questionService.getQuestions();
         int countQuestions = 0;
         int countRightAnswers = 0;
         ioService.outputTextLn(Message.START_TESTING);
-        for (Question question: questions) {
+        for (Question question : questions) {
             countQuestions++;
             List<Integer> rightAnswers = askQuestion(question, countQuestions);
             List<Integer> userAnswers = askAnswer();
-            if (checkAnswer(rightAnswers,userAnswers)){
+            if (checkAnswer(rightAnswers, userAnswers)) {
                 countRightAnswers++;
             }
         }
@@ -37,21 +37,22 @@ public class TestService {
         summingUp(mark);
         return mark;
     }
+
     //Asks a question, and returns a list of correct answers
-    protected List<Integer> askQuestion(Question question, int number){
+    protected List<Integer> askQuestion(Question question, int number) {
         ioService.outputTextLn("\n" + number + ") " + question.getTopic());
         ioService.outputTextLn(Message.ANSWER_OPTIONS);
         return givePossibleAnswers(question);
     }
 
     //Suggests possible answers, and returns a list of correct answers
-    protected List<Integer> givePossibleAnswers(Question question){
+    protected List<Integer> givePossibleAnswers(Question question) {
         Collections.shuffle(question.getAnswerOptions());
         List<Integer> rightAnswers = new ArrayList<>();
         int answerNumber = 1;
-        for (Answer answer: question.getAnswerOptions()) {
+        for (Answer answer : question.getAnswerOptions()) {
             ioService.outputTextLn("\t\t" + answerNumber + " - " + answer.getSolution());
-            if (answer.isCorrect()){
+            if (answer.isCorrect()) {
                 rightAnswers.add(answerNumber);
             }
             answerNumber++;
@@ -78,19 +79,18 @@ public class TestService {
     }
 
     //Checking the user's choice
-    protected boolean checkAnswer(List<Integer> rightAnswers,List<Integer> userAnswers){
+    protected boolean checkAnswer(List<Integer> rightAnswers, List<Integer> userAnswers) {
         Collections.sort(rightAnswers);
         Collections.sort(userAnswers);
         return rightAnswers.equals(userAnswers);
     }
 
     //Calculate the percentage of correct answers
-    protected int getResult(int countQuestions, int countRightAnswers){
-        return Math.round((float)countRightAnswers/(float)countQuestions*100);
+    protected int getResult(int countQuestions, int countRightAnswers) {
+        return Math.round((float) countRightAnswers / (float) countQuestions * 100);
     }
 
-    protected void summingUp (int mark)
-    {
+    protected void summingUp(int mark) {
         ioService.outputTextLn(Message.TEST_OVER);
         ioService.outputText("\n# - " + mark + "%");
         ioService.outputTextLn(Message.YOUR_MARK);
